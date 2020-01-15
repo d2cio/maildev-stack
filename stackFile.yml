@@ -1,0 +1,33 @@
+version: '1.0'
+services:
+  - name: maildev
+    type: nodejs
+    version: 12
+    source:
+      type: git
+      url: https://github.com/maildev/maildev
+    ports:
+      - 1080
+      - 1025
+    remoteAccess: true
+    localDeps: npm i
+    startCommand: sh -c "./bin/maildev --web-user $ADMIN_LOGIN --web-pass $ADMIN_PASS --incoming-user $INCOMING_USER --incoming-pass $INCOMING_PASS"
+    env:
+      ADMIN_LOGIN: null
+      ADMIN_PASS: null
+      INCOMING_USER: null
+      INCOMING_PASS: null
+    comments:
+      env:
+        ADMIN_LOGIN: HTTP user for GUI
+        ADMIN_PASS: HTTP password for GUI
+        INCOMING_USER: SMTP user for incoming emails
+        INCOMING_PASS: SMTP password for incoming emails
+    deployTo:
+      - maildev
+
+hosts:
+  - name: maildev
+    requirements:
+      cores: 1
+      memory: 1
